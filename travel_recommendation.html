@@ -5,6 +5,8 @@
   <title>TravelBloom</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+  <script src="travel_recommendation.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
   <header class="navbar">
@@ -18,15 +20,13 @@
       <a href="contact-us.html">Contact Us</a>
     </nav>
     <div class="search-bar">
-      <input type="text" placeholder="Enter a destination or keyword">
+      <input type="text" id="destination" value="japan" placeholder="Enter a destination or keyword">
       <button class="search-btn">Search</button>
       <button class="clear-btn">Clear</button>
     </div>
   </header>
   <main>
     <div class="hero">
-      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80" alt="City" class="hero-bg">
-      <div class="overlay"></div>
       <div class="hero-content">
         <h1>
           <span>EXPLORE</span><br>
@@ -38,6 +38,7 @@
         </p>
         <button class="book-btn">BOOK NOW</button>
       </div>
+      <div class="results"></div>
       <div class="social">
         <a href="#"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/twitter.svg" alt="Twitter"></a>
         <a href="#"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg" alt="Facebook"></a>
@@ -45,6 +46,7 @@
         <a href="#"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube"></a>
       </div>
     </div>
+    
   </main>
 </body>
 </html>
