@@ -209,8 +209,8 @@ nav a {
 
 .team-list {
     display: flex;
-    gap: 69px;
-    flex-wrap: wrap;
+    gap: 78px;
+  
 }
 
 .team-card {
@@ -409,15 +409,18 @@ nav a {
     text-align: center;
     max-width: 100vw;
   }
-    .hero {
-      height: 0vh;
-      min-height: 121px;
+  .hero {
+    height: 0vh;
+    min-height: 121px;
   }
   .team-section {
-    gap: 3vw;
-}
-
-}
+    gap: 0vw;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    margin: 0;
+  }
+} /* <-- This closing brace is missing! */
 
 @media (max-width: 900px) {
   .navbar {
@@ -463,6 +466,7 @@ nav a {
     text-align: center;
     background: rgba(40,40,40,0.45);
     display: block;
+    margin: 0 auto;
   }
   .contact-form-container {
     position: static;
@@ -498,6 +502,14 @@ nav a {
     width: 90vw;
     max-width: 300px;
   }
+  .team-list {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .team-list {
+    justify-content: center;
+}
 }
 
 @media (max-width: 600px) {
@@ -544,7 +556,7 @@ nav a {
     font-size: 1.5em;
     letter-spacing: 0.5px;
     margin: 0 0 10px 0;
-    line-height: 1.1;
+    line-height: 0.9rem;
     word-break: break-word;
   }
   .desc {
@@ -588,7 +600,7 @@ nav a {
     height: 22px;
   }
   .city-image {
-    width: 98vw;
+    width: 100%;
     
   }
 }
