@@ -9,23 +9,46 @@ document.querySelector(".search-btn").addEventListener("click", function(event) 
                 const resultsDiv = document.querySelector(".results");
                 resultsDiv.innerHTML = ""; // Clear previous results
 
-                // Search in countries
-                const countryMatches = data.countries.filter(country =>
-                    country.name.toLowerCase().includes(destination.toLowerCase())
-                );
+                const lowerDestunation = destination.toLowerCase();
+                let countryMatches = [];
+                let templeMatches = []; 
+                let beachMatches = [];
+                // if countries
+                if(lowerDestunation === "countries" || lowerDestunation === "country") {
+                    countryMatches = data.countries;
+                }
 
-                // Search in temples
-                const templeMatches = data.temples.filter(temple =>
-                    temple.name.toLowerCase().includes(destination.toLowerCase())
-                );
+                // if temples
+                if(lowerDestunation === "temples" || lowerDestunation === "temple") {
+                    templeMatches = data.temples;
+                }
 
-                // Search in beaches
-                const beachMatches = data.beaches.filter(beach =>
-                    beach.name.toLowerCase().includes(destination.toLowerCase())
-                );
+                // if beaches
+                if(lowerDestunation === "beaches" || lowerDestunation === "beach") {
+                    beachMatches = data.beaches;               
+                }
 
-                // Collect all results
+                // if having no matches
+                if (countryMatches.length === 0 && templeMatches.length === 0 && beachMatches.length === 0) {
+                    alert("No recommendations found for this destination.");
+                    return;
+                }
                 let hasResults = false;
+
+                // Helper function to get local time string for a timezone
+                function getLocalTime(timezone) {
+                    try {
+                        return new Intl.DateTimeFormat('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: false,
+                            timeZone: timezone
+                        }).format(new Date());
+                    } catch {
+                        return "Unknown";
+                    }
+                }
 
                 // Show country matches
                 if (countryMatches.length > 0) {
@@ -33,11 +56,16 @@ document.querySelector(".search-btn").addEventListener("click", function(event) 
                     countryMatches.forEach(country => {
                         const recDiv = document.createElement("div");
                         recDiv.className = "recommendation";
-                        //recDiv.innerHTML = `<h3>${country.name}</h3>`;
-                        // Optionally show cities
                         if (country.cities && country.cities.length > 0) {
-                            recDiv.innerHTML +=  country.cities.map(city =>
-                                `<div><img src="images/${city.imageUrl}" alt="${city.name}" class="city-image` + `"><br /><strong>${city.name}</strong><br /> ${city.description}<br /><button>visit</button></div>`
+                            recDiv.innerHTML += country.cities.map(city =>
+                                `<div>
+                                    <img src="images/${city.imageUrl}" alt="${city.name}" class="city-image"><br />
+                                    <strong>${city.name}</strong><br />
+                                    ${city.description}<br />
+                                    <em>Timezone: ${city.timezone}</em><br />
+                                    <strong>Local time: ${getLocalTime(city.timezone)}</strong><br />
+                                    <button>visit</button>
+                                </div>`
                             ).join("");
                         }
                         resultsDiv.appendChild(recDiv);
@@ -50,7 +78,14 @@ document.querySelector(".search-btn").addEventListener("click", function(event) 
                     templeMatches.forEach(temple => {
                         const recDiv = document.createElement("div");
                         recDiv.className = "recommendation";
-                        recDiv.innerHTML = `<h3>${temple.name}</h3><p>${temple.description}</p>`;
+                        recDiv.innerHTML = `<div>
+                            <img src="images/${temple.imageUrl}" alt="${temple.name}" class="city-image"><br />
+                            <strong>${temple.name}</strong><br />
+                            ${temple.description}<br />
+                            <em>Timezone: ${temple.timezone}</em><br />
+                            <strong>Local time: ${getLocalTime(temple.timezone)}</strong><br />
+                            <button>visit</button>
+                        </div>`;
                         resultsDiv.appendChild(recDiv);
                     });
                 }
@@ -61,21 +96,31 @@ document.querySelector(".search-btn").addEventListener("click", function(event) 
                     beachMatches.forEach(beach => {
                         const recDiv = document.createElement("div");
                         recDiv.className = "recommendation";
-                        recDiv.innerHTML = `<h3>${beach.name}</h3><p>${beach.description}</p>`;
+                        recDiv.innerHTML += `<div>
+                            <img src="images/${beach.imageUrl}" alt="${beach.name}" class="city-image"><br />
+                            <strong>${beach.name}</strong><br />
+                            ${beach.description}<br />
+                            <em>Timezone: ${beach.timezone}</em><br />
+                            <strong>Local time: ${getLocalTime(beach.timezone)}</strong><br />
+                            <button>visit</button>
+                        </div>`;
                         resultsDiv.appendChild(recDiv);
                     });
                 }
 
                 if (!hasResults) {
-                    resultsDiv.innerHTML = "<p>No recommendations found for this destination.</p>";
+                    alert("No recommendations found for this destination.");
                 }
+            }).catch(error => {
+                console.error("Error fetching travel recommendations:", error);
+                alert("Error loading recommendations. Please try again later.");
             });
     } else {
         alert("Please enter a search term.");
     }
 });
 
-// Optional: clear results when clicking the clear button
+// clear results when clicking the clear button
 document.querySelector(".clear-btn").addEventListener("click", function() {
     document.getElementById("destination").value = "";
     document.querySelector(".results").innerHTML = "";
